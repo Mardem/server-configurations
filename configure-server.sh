@@ -94,3 +94,4 @@ docker-compose up -d
 echo -e "$c_azul$c_invert Finalizando instalação"
 sudo chmod -R 777 ~/laravel-app/storage/** ~/laravel-app/bootstrap/** ~/laravel-app/vendor/** .env composer.json
 cd ~/laravel-app && docker-compose exec app php artisan key:generate
+echo -e "$c_reset Instalação do servidor concluída com sucesso."
