@@ -40,8 +40,6 @@ else
 
     # Clona o repositório
     git clone $link laravel-app
-    # Apaga a pasta desnecessária :-)
-    (sleep 5 && rm -rf ./laravel-app) # Remover quando colocar em produção
 fi
 
 # --------------- 2ª etapa - Objetivo: Realizar instalação das depedências do projeto e dar permissões ---------------
@@ -52,7 +50,6 @@ docker run --rm -v $(pwd):/app composer install
 
 # Adição de permissões de usuário e também arquivos
 sudo chown -R $USER:$USER ~/laravel-app
-sudo chmod -R 777 ~/laravel-app/storage/** ~/laravel-app/bootstrap/** ~/laravel-app/vendor/**
 
 # --------------- 3ª etapa - Objetivo: Baixar o arquivo Docker Compose e Dockerfile ---------------
 # Download do Dockerfile
@@ -97,4 +94,5 @@ docker-compose up -d
 
 # --------------- 7ª etapa - Objetivo: Finalizar a instalação do Laravel ---------------
 echo -e "$c_azul$c_invert Finalizando instalação"
+sudo chmod -R 777 ~/laravel-app/storage/** ~/laravel-app/bootstrap/** ~/laravel-app/vendor/**
 docker-compose exec app php artisan key:generate
