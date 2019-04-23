@@ -42,7 +42,7 @@ fi
 
 # --------------- 2ª etapa - Objetivo: Realizar instalação das depedências do projeto e dar permissões ---------------
 # Entra na pasta
-cd ~/laravel-app
+cd ~/laravel-app &&
 # Instala as dependências usando o composer do docker
 docker run --rm -v $(pwd):/app composer install
 
@@ -52,34 +52,34 @@ sudo chown -R $USER:$USER ~/laravel-app
 # --------------- 3ª etapa - Objetivo: Baixar o arquivo Docker Compose e Dockerfile ---------------
 # Download do Dockerfile
 echo -e "$c_invert$c_verde Baixando arquivo Dockerfile $c_reset"
-wget https://raw.githubusercontent.com/Mardem/server-configurations/master/Dockerfile
+wget https://raw.githubusercontent.com/Mardem/server-configurations/master/Dockerfile -P ~/laravel-app
 
 # Download do Docker Compose
 echo -e "$c_invert$c_verde_claro Baixando arquivo Docker Compose $c_reset"
-wget https://raw.githubusercontent.com/Mardem/server-configurations/master/docker-compose.yml
+wget https://raw.githubusercontent.com/Mardem/server-configurations/master/docker-compose.yml -P ~/laravel-app
 
 # --------------- 4ª etapa - Objetivo: Configurar o PHP corretamente ---------------
 
 php_ini_content="upload_max_filesize=40M \npost_max_size=40M" # Variável de conteúdo do arquivo .ini
 
 # Faz com que crie a pasta PHP e também os antecessores (se não existir)
-mkdir laravel-app/php -p
+mkdir ~/laravel-app/php -p
 
 # Cria o arquivo de configuração e escreve o conteúdo dentro do mesmo
-touch laravel-app/php/local.ini && echo -e $php_ini_content >> laravel-app/php/local.ini
+touch ~/laravel-app/php/local.ini && echo -e $php_ini_content >> ~/laravel-app/php/local.ini
 
 # --------------- 5ª etapa - Objetivo: Configurar o Nginx corretamente ---------------
 
 # Faz com que crie a pasta Nginx e também os antecessores (se não existir)  e faz o download do arquivo de configuração do Nginx
-wget https://raw.githubusercontent.com/Mardem/server-configurations/development/app.conf -P laravel-app/nginx/conf.d --tries=3
+wget https://raw.githubusercontent.com/Mardem/server-configurations/development/app.conf -P ~/laravel-app/nginx/conf.d --tries=3
 
 # --------------- 6ª etapa - Objetivo: Subir os containers e configurar o .env ---------------
 
 # Baixa o .env do repositório
-wget https://raw.githubusercontent.com/Mardem/server-configurations/development/.env --tries=3
+wget https://raw.githubusercontent.com/Mardem/server-configurations/development/.env -P ~/laravel-app --tries=3
 
 # Variável que armazena o caminho do arquivo
-FILE=".env"
+FILE="~/laravel-app/.env"
 # Escreve informações no arquivo .env usando o heredoc
 /bin/cat >> $FILE <<EOL
 
@@ -93,4 +93,4 @@ docker-compose up -d
 # --------------- 7ª etapa - Objetivo: Finalizar a instalação do Laravel ---------------
 echo -e "$c_azul$c_invert Finalizando instalação"
 sudo chmod -R 777 ~/laravel-app/storage/** ~/laravel-app/bootstrap/** ~/laravel-app/vendor/** .env composer.json
-docker-compose exec app php artisan key:generate
+cd ~/laravel-app && docker-compose exec app php artisan key:generate
