@@ -92,5 +92,5 @@ docker-compose up -d
 
 # --------------- 7ª etapa - Objetivo: Finalizar a instalação do Laravel ---------------
 echo -e "$c_azul$c_invert Finalizando instalação"
-sudo chmod -R 777 ~/laravel-app/storage/** ~/laravel-app/bootstrap/** ~/laravel-app/vendor/**
+sudo chmod -R 777 ~/laravel-app/storage/** ~/laravel-app/bootstrap/** ~/laravel-app/vendor/** .env composer.json
 docker-compose exec app php artisan key:generate
