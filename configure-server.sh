@@ -44,15 +44,11 @@ else
     (sleep 5 && rm -rf ./laravel-app) # Remover quando colocar em produção
 fi
 
-# --------------- 2ª etapa - Objetivo: Realizar instalação das depedências do projeto e dar permissões ---------------
+# --------------- 2ª etapa - Objetivo: Realizar instalação das depedências do projeto ---------------
 # Entra na pasta
 cd ~/laravel-app
 # Instala as dependências usando o composer do docker
 docker run --rm -v $(pwd):/app composer install
-
-# Adição de permissões de usuário e também arquivos
-sudo chown -R $USER:$USER ~/laravel-app
-sudo chmod -R 777 ~/laravel-app/storage/** ~/laravel-app/bootstrap/** ~/laravel-app/vendor/**
 
 # --------------- 3ª etapa - Objetivo: Baixar o arquivo Docker Compose e Dockerfile ---------------
 # Download do Dockerfile
@@ -98,3 +94,7 @@ docker-compose up -d
 # --------------- 7ª etapa - Objetivo: Finalizar a instalação do Laravel ---------------
 echo -e "$c_azul$c_invert Finalizando instalação"
 docker-compose exec app php artisan key:generate
+
+# Adição de permissões de usuário e também arquivos
+sudo chown -R $USER:$USER ~/laravel-app
+sudo chmod -R 777 ~/laravel-app/storage/** ~/laravel-app/bootstrap/** ~/laravel-app/vendor/**
