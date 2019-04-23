@@ -29,8 +29,6 @@ programGit=$(command -v git)
 if [ ! -z "$programGit" ]; then
     # Clona o repositório
     git clone $link laravel-app
-    # Apaga a pasta desnecessária :-)
-    (sleep 5 && rm -rf ./laravel-app) # Remover antes de colocar em produção
 else
     # Baixa Git e executa o download do repositório
     echo -e "Aguarde enquanto é feito o download o do$c_vermelho Git no servidor..."
