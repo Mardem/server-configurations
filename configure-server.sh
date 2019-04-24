@@ -11,6 +11,9 @@ c_verde="\e[32m"
 c_azul="\e[34m"
 c_ciano="\e[36m"
 
+# Mensagens
+msg_1="Nenhuma ação será executada, instalação finalizada."
+
 # --------------- 1ª etapa - Objetivo: Baixar os arquivos do Gitlab ou Github e colocar numa pasta chamada "laravel-app" ---------------
 
 echo -e "$c_vermelho###################### Configuração de servidor Digital Ocean ###################### $c_branco"
@@ -94,4 +97,28 @@ docker-compose up -d
 echo -e "$c_azul$c_invert Finalizando instalação"
 sudo chmod -R 777 ~/laravel-app/storage/** ~/laravel-app/bootstrap/** ~/laravel-app/vendor/** .env composer.json
 cd ~/laravel-app && docker-compose exec app php artisan key:generate
+
+# --------------- 8ª etapa - Objetivo: Configurar o Supervisor de Filas ---------------
+echo -e "$c_invert$c_ciano Deseja configurar jobs (filas)? Digite um número abaixo:\n$c_reset"
+echo -e "$c_verde 1 - Sim$c_reset"
+echo -e "$c_vermelho 2 - Não$c_reset"
+echo -e "$c_amarela 0 - Finalizar$c_reset"
+
+read response;
+
+case $response in
+1) 
+	echo -e "$c_amarela Aguarde enquanto configuro o supervisor"
+	wget https://raw.githubusercontent.com/Mardem/server-configurations/master/laravel-worker.conf -P etc/supervisor/conf.d
+	
+	sudo supervisorctl reread
+	sudo supervisorctl update
+	sudo supervisorctl start laravel-worker:*
+	
+	echo -e "$c_verde Configuração finalizada, volte sempre."
+;;
+2) echo -e $c_vermelho$msg_1 ;;
+*) echo -e $c_amarela$msg_1;;
+esac
+
 echo -e "$c_reset Instalação do servidor concluída com sucesso."
