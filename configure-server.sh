@@ -55,11 +55,11 @@ sudo chown -R $USER:$USER ~/laravel-app
 # --------------- 3ª etapa - Objetivo: Baixar o arquivo Docker Compose e Dockerfile ---------------
 # Download do Dockerfile
 echo -e "$c_invert$c_verde Baixando arquivo Dockerfile $c_reset"
-wget https://raw.githubusercontent.com/Mardem/server-configurations/master/src/Dockerfile -P ~/laravel-app
+wget -q https://raw.githubusercontent.com/Mardem/server-configurations/master/src/Dockerfile -P ~/laravel-app
 
 # Download do Docker Compose
 echo -e "$c_invert$c_verde_claro Baixando arquivo Docker Compose $c_reset"
-wget https://raw.githubusercontent.com/Mardem/server-configurations/master/src/docker-compose.yml -P ~/laravel-app
+wget -q https://raw.githubusercontent.com/Mardem/server-configurations/master/src/docker-compose.yml -P ~/laravel-app
 
 # --------------- 4ª etapa - Objetivo: Configurar o PHP corretamente ---------------
 
@@ -74,12 +74,12 @@ touch ~/laravel-app/php/local.ini && echo -e $php_ini_content >> ~/laravel-app/p
 # --------------- 5ª etapa - Objetivo: Configurar o Nginx corretamente ---------------
 
 # Faz com que crie a pasta Nginx e também os antecessores (se não existir)  e faz o download do arquivo de configuração do Nginx
-wget https://raw.githubusercontent.com/Mardem/server-configurations/development/app.conf -P ~/laravel-app/nginx/conf.d --tries=3
+wget -q https://raw.githubusercontent.com/Mardem/server-configurations/master/src/app.conf -P ~/laravel-app/nginx/conf.d --tries=3
 
 # --------------- 6ª etapa - Objetivo: Subir os containers e configurar o .env ---------------
 
 # Baixa o .env do repositório
-wget https://raw.githubusercontent.com/Mardem/server-configurations/development/.env -P ~/laravel-app --tries=3
+wget -q https://raw.githubusercontent.com/Mardem/server-configurations/master/src/.env -P ~/laravel-app --tries=3
 
 # Variável que armazena o caminho do arquivo
 FILE="~/laravel-app/.env"
@@ -97,28 +97,3 @@ docker-compose up -d
 echo -e "$c_azul$c_invert Finalizando instalação"
 sudo chmod -R 777 ~/laravel-app/storage/** ~/laravel-app/bootstrap/** ~/laravel-app/vendor/** .env composer.json
 cd ~/laravel-app && docker-compose exec app php artisan key:generate
-
-# --------------- 8ª etapa - Objetivo: Configurar o Supervisor de Filas ---------------
-echo -e "$c_invert$c_ciano Deseja configurar jobs (filas)? Digite um número abaixo:\n$c_reset"
-echo -e "$c_verde 1 - Sim$c_reset"
-echo -e "$c_vermelho 2 - Não$c_reset"
-echo -e "$c_amarela 0 - Finalizar$c_reset"
-
-read response;
-
-case $response in
-1) 
-	echo -e "$c_amarela Aguarde enquanto configuro o supervisor"
-	wget https://raw.githubusercontent.com/Mardem/server-configurations/master/src/laravel-worker.conf -P etc/supervisor/conf.d
-	
-	sudo supervisorctl reread
-	sudo supervisorctl update
-	sudo supervisorctl start laravel-worker:*
-	
-	echo -e "$c_verde Configuração finalizada, volte sempre."
-;;
-2) echo -e $c_vermelho$msg_1 ;;
-*) echo -e $c_amarela$msg_1;;
-esac
-
-echo -e "$c_reset Instalação do servidor concluída com sucesso."
