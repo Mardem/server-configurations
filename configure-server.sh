@@ -55,11 +55,11 @@ sudo chown -R $USER:$USER ~/laravel-app
 # --------------- 3ª etapa - Objetivo: Baixar o arquivo Docker Compose e Dockerfile ---------------
 # Download do Dockerfile
 echo -e "$c_invert$c_verde Baixando arquivo Dockerfile $c_reset"
-wget https://raw.githubusercontent.com/Mardem/server-configurations/master/Dockerfile -P ~/laravel-app
+wget https://raw.githubusercontent.com/Mardem/server-configurations/master/src/Dockerfile -P ~/laravel-app
 
 # Download do Docker Compose
 echo -e "$c_invert$c_verde_claro Baixando arquivo Docker Compose $c_reset"
-wget https://raw.githubusercontent.com/Mardem/server-configurations/master/docker-compose.yml -P ~/laravel-app
+wget https://raw.githubusercontent.com/Mardem/server-configurations/master/src/docker-compose.yml -P ~/laravel-app
 
 # --------------- 4ª etapa - Objetivo: Configurar o PHP corretamente ---------------
 
@@ -109,7 +109,7 @@ read response;
 case $response in
 1) 
 	echo -e "$c_amarela Aguarde enquanto configuro o supervisor"
-	wget https://raw.githubusercontent.com/Mardem/server-configurations/master/laravel-worker.conf -P etc/supervisor/conf.d
+	wget https://raw.githubusercontent.com/Mardem/server-configurations/master/src/laravel-worker.conf -P etc/supervisor/conf.d
 	
 	sudo supervisorctl reread
 	sudo supervisorctl update
