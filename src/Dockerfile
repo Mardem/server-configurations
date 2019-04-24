@@ -23,8 +23,9 @@ RUN apt-get update && apt-get install -y \
     nano \
     xvfb \
     libfontconfig \
-    wkhtmltopdf \
-    supervisor
+    wkhtmltopdf
+# Install Laravel Supervisor
+RUN sudo apt-get install supervisor
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
