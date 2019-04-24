@@ -11,4 +11,3 @@ c_verde="\e[32m"
 c_azul="\e[34m"
 c_ciano="\e[36m"
 c_amarela="\e[33m"
-
